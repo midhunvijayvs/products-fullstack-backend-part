@@ -33,12 +33,7 @@ class ProductController extends Controller
   
 
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         $addProductPost = Product::create([
@@ -72,18 +67,13 @@ class ProductController extends Controller
     }
 
    
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
+    
+     
     public function update(Request $request, $id)
     {
         $data=$request->all();
 
-        unset($data['_method']);
+        
 
         $editProductPost = Product::where('id', $id)
               ->update(['title' => $request->title,
