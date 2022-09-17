@@ -21,19 +21,66 @@ class ProductController extends Controller
     }
 
     
-    public function search($query)
+    public function search()
     {
-        $searchProduct = Product::Find('title', $query);
+       
+        $searchProduct = Product::query();
+        if (request('term')) {
+            $searchProduct->where('title', 'Like', '%' . request('term') . '%');
+        }
 
-        return ($searchProduct);
-
-    
-   
-    
-  
-
+        return $searchProduct->orderBy('id', 'DESC')->paginate(10);
     }
     
+
+
+    
+           
+
+
+    public function searchPriceFilter(Request $request)
+    {
+        $min=$request->priceFrom;
+        $max=$request->priceTo;
+        $searchQuery=$request->searchQuery;
+
+        $searchPriceProduct = Product::query();
+       
+            $searchPriceProduct->where('title', 'Like', '%' . $searchQuery . '%')
+                            ->where('price','>=',$min)
+                            ->where('price','<=',$max);
+        
+        
+        
+        return $searchPriceProduct->orderBy('id', 'DESC')->paginate(10);
+    }
+
+
+
+    public function searchSort(Request $request)
+    {
+        $sortKey=$request->sortKey;
+        
+        $searchQuery=$request->searchQuery;
+
+        $searchSort = Product::query();
+       
+        $searchSort->where('title', 'Like', '%' . $searchQuery . '%');
+        
+        $result='null';
+
+        if($sortKey=='PriceAscending'){
+
+            $result=$searchSort->orderBy('price', 'ASC')->paginate(10);  
+        }
+        else if($sortKey=='PriceDescending'){
+            $result= $searchSort->orderBy('price', 'DESC')->paginate(10);
+        }
+        return $result;
+        
+    }
+
+
     public function store(Request $request)
     {
         $addProductPost = Product::create([

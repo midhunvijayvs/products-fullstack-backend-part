@@ -18,9 +18,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/list',[ProductController::class, 'index']);
-Route::get('/search/{query}',[ProductController::class, 'search']);
+Route::post('/search',[ProductController::class, 'search']);
+Route::post('/search-price-filter',[ProductController::class, 'searchPriceFilter']);
+Route::post('/search-sort',[ProductController::class, 'searchSort']);
 Route::delete('/{id}',[ProductController::class, 'destroy']);
 Route::post('/add',[ProductController::class, 'store']);
 Route::put('/edit/{id}',[ProductController::class, 'update']);
+
 
 
