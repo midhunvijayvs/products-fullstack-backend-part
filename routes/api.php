@@ -23,6 +23,7 @@ Route::post('/search-price-filter',[ProductController::class, 'searchPriceFilter
 Route::post('/search-sort',[ProductController::class, 'searchSort']);
 Route::delete('/{id}',[ProductController::class, 'destroy']);
 Route::post('/add',[ProductController::class, 'store']);
+Route::post('/add-batch',[ProductController::class, 'storeBatch']);
 Route::put('/edit/{id}',[ProductController::class, 'update']);
 
 

@@ -17,10 +17,12 @@ return new class extends Migration
             $table->id();
             $table->text('title');  // product title
             $table->text('description');   // description
-            $table->text('short_notes');   // short notes
+            $table->text('short_note');   // short notes
             $table->decimal('price', 10, 2); // price
             $table->text('image_public_url');
             $table->text('image_name');
+            $table->boolean('vat_applicable');
+            $table->decimal('vat_percentage', 10, 2);
             
             $table->timestamps();
         });
