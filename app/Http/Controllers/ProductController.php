@@ -117,27 +117,28 @@ class ProductController extends Controller
 
     public function storeBatch(Request $request)
     {
-        $decoded_request_data=json_decode($request->data);   //  oposit action for JSON
-      
+        $products=$request->products;   //  oposit action for JSON
 
-        for($i=0;$i<count($decoded_request_data);$i++){
+       
+
+        for($i=0;$i<count($products);$i++){
             $addProductPost = Product::create([
-                'title' => $decoded_request_data[$i]->title,
-                'description' => $decoded_request_data[$i]->description,
-                'short_note' => $decoded_request_data[$i]->short_note,
-                'price' => $decoded_request_data[$i]->price,
+                'title' => $products[$i]['title'],                     // -> is replaced by [], because it will only work in this way as coming request is json. 
+                'description' => $products[$i]['description'],
+                'short_note' => $products[$i]['short_note'],
+                'price' => $products[$i]['price'],
                 'image_public_url' => 'dummy',
                 'image_name'=> 'dummy',
-                'vat_applicable' => $decoded_request_data[$i]->vat_applicable,
-                'vat_percentage' => $decoded_request_data[$i]->vat_percentage
+                'vat_applicable' => $products[$i]['vat_applicable'],
+                'vat_percentage' => $products[$i]['vat_percentage']
             ]);
-           
-        
-            
-            $image_64 = $decoded_request_data[$i]->image; //your base64 encoded data
+
+
+
+            $image_64=$products[0]['image']['file']['thumbUrl'];
 
             $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];   // .jpg .png .pdf
-          
+
             $replace = substr($image_64, 0, strpos($image_64, ',')+1); 
           
           // find substring fro replace here eg: data:image/png;base64,
@@ -145,36 +146,31 @@ class ProductController extends Controller
            $image = str_replace($replace, '', $image_64); 
           
            $image = str_replace(' ', '+', $image); 
-          
+                                      
+            $filename= $addProductPost->id.'.'.$extension;    // dynamically setting  filename for image to save
+                                                    
+            // $file-> move(public_path('\storage'), $filename);
+            Storage::disk('public')->put($filename, base64_decode($image));
 
-           $filename= $addProductPost->id.'.'.$extension;
-           //$imageName = Str::random(10).'.'.$extension;
-          
-           Storage::disk('public')->put($filename, base64_decode($image));
-          
-            
 
-            //base64_decode($image)-> move(public_path('\storage'), $filename);
-            
             $addProductPost->image_public_url=asset('storage/'.$filename);    //asset(''storage/...')  is a buitin function to get the public url of the storage folder, its subfolders or files in it
             $addProductPost->image_name=$filename;
             $addProductPost->save();
+ 
+       }
 
-        }
-
+      
         
         return response()->json([
             'status'=>'success',
-            // 'data'=> $decoded_request_data,
-            
            
-            // 'stored the Entry'=> $addProductPost
         ]
         ,200);
     }
 
 
 
+    
 
 
 
@@ -191,13 +187,8 @@ class ProductController extends Controller
               'description' => $request->description,
               'short_note' => $request->short_note,
               'price' => $request->price,
-             
-              
-            ]);
+        ]);
        
-        
-
-
 
         $file= $request->file('image');                             //pick the file with key 'image' from $request
         $filename= $id.'.'.$file->getClientOriginalExtension();    // dynamically setting  filename for image to save
@@ -232,18 +223,10 @@ class ProductController extends Controller
 
         return response()->json([
             'status'=>'success',
-
-
             'deleted file url'=> public_path('\storage/'.$item->image_name)
         ]
         ,200);
 
-
-        
-        
-        
-        
-        
         
     }
 }
