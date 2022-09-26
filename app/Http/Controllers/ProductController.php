@@ -135,7 +135,7 @@ class ProductController extends Controller
 
 
 
-            $image_64=$products[0]['image']['file']['thumbUrl'];
+            $image_64=$products[$i]['image'];
 
             $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];   // .jpg .png .pdf
 
@@ -163,7 +163,7 @@ class ProductController extends Controller
         
         return response()->json([
             'status'=>'success',
-           
+           '$image_64'=>$image_64,
         ]
         ,200);
     }
