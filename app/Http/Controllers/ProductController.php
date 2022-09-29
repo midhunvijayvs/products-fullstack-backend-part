@@ -217,14 +217,7 @@ class ProductController extends Controller
             'Content-Type' => 'image/webp',
          ];
          
-        //return Response::download($file);
-      
-        // return response()->download($file)
-        // ->withHeaders([
-           
-        //     'Access-Control-Allow-Origin' => '*',
-        //     'Content-Type' => 'image/png',
-        // ]);
+       
     }
 
 
