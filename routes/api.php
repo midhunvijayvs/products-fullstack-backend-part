@@ -26,6 +26,7 @@ Route::post('/add',[ProductController::class, 'store']);
 Route::post('/add-batch',[ProductController::class, 'storeBatch']);
 Route::post('/add-batch-images',[ProductController::class, 'storeBatchImages']);
 Route::put('/edit/{id}',[ProductController::class, 'update']);
+Route::get('/getFile/{id}',[ProductController::class, 'downloadfile']);
 
 
 

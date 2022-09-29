@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\File; 
 use Storage;
+use Response;
 class ProductController extends Controller
 {
     /**
@@ -106,8 +107,6 @@ class ProductController extends Controller
 
         return response()->json([
             'status'=>'success',
-
-
             'stored the Entry'=> $addProductPost
         ]
         ,200);
@@ -207,6 +206,28 @@ class ProductController extends Controller
         
        
     }
+
+
+// to override the problem of api call for file blocking by cross origin policy
+    public function downloadfile(Request $request, $id)
+    {
+        
+        $file = public_path('\storage').'/'.$id.'.webp';
+        $headers = [
+            'Content-Type' => 'image/webp',
+         ];
+         
+        //return Response::download($file);
+      
+        // return response()->download($file)
+        // ->withHeaders([
+           
+        //     'Access-Control-Allow-Origin' => '*',
+        //     'Content-Type' => 'image/png',
+        // ]);
+    }
+
+
 
     /**
      * Remove the specified resource from storage.
