@@ -11,9 +11,8 @@ class MailController extends Controller
 {
     public function sendMail(Request $request)
     {
-        Mail::to($request->to)->send(new QuotationRequest($request));    
+        Mail::to($request->to)->cc($request->cc)->bcc($request->bcc)->send(new QuotationRequest($request));    
     }
 }
 
-//->cc($request->cc)
-//->bcc($request->bcc)
+
