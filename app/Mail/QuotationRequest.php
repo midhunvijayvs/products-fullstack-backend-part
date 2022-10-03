@@ -31,7 +31,7 @@ class QuotationRequest extends Mailable
     public function build()
     {
         return $this->from('midhun.v@tranetech.ae')
-                ->subject('Quotation Request')
+                ->subject($this->mailRequest1->subject)
                 ->view('EmailTemplate')
                
                  ->attach($this->mailRequest1->attachment,
